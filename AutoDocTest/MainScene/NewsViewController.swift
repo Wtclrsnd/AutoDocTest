@@ -24,6 +24,9 @@ class NewsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .red
         // Do any additional setup after loading the view.
+        Task {
+            let news = await viewModel.getNews()
+        }
     }
 
 

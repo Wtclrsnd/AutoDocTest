@@ -9,4 +9,11 @@ import Foundation
 
 final class NewsViewModel: NSObject {
     
+    func getNews() async -> NewsDTO? {
+        do {
+            return try await NewsAPIManager.getNews()
+        } catch {
+            return nil
+        }
+    }
 }

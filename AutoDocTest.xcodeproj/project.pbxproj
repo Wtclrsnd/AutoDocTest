@@ -21,6 +21,7 @@
 		72F389502B94DD5E009E8B75 /* NewsContentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F3894F2B94DD5E009E8B75 /* NewsContentConfiguration.swift */; };
 		72F389522B94DE05009E8B75 /* NewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F389512B94DE05009E8B75 /* NewsModel.swift */; };
 		72F389542B94DE17009E8B75 /* NewsAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F389532B94DE17009E8B75 /* NewsAPIManager.swift */; };
+		72F389562B94DFD9009E8B75 /* NewsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F389552B94DFD9009E8B75 /* NewsDTO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		72F3894F2B94DD5E009E8B75 /* NewsContentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsContentConfiguration.swift; sourceTree = "<group>"; };
 		72F389512B94DE05009E8B75 /* NewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsModel.swift; sourceTree = "<group>"; };
 		72F389532B94DE17009E8B75 /* NewsAPIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsAPIManager.swift; sourceTree = "<group>"; };
+		72F389552B94DFD9009E8B75 /* NewsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				72F389532B94DE17009E8B75 /* NewsAPIManager.swift */,
+				72F389552B94DFD9009E8B75 /* NewsDTO.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				72F389192B94DAD5009E8B75 /* SceneDelegate.swift in Sources */,
 				72F389482B94DC90009E8B75 /* NewsViewModel.swift in Sources */,
 				72F389502B94DD5E009E8B75 /* NewsContentConfiguration.swift in Sources */,
+				72F389562B94DFD9009E8B75 /* NewsDTO.swift in Sources */,
 				72F3894C2B94DCF3009E8B75 /* NewsCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
