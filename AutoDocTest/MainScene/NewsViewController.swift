@@ -14,10 +14,10 @@ class NewsViewController: UIViewController {
         case content
     }
     
-    private typealias DataSource = UICollectionViewDiffableDataSource<CollectionSection, NewsContent>
-    private typealias DataSnapshot = NSDiffableDataSourceSnapshot<CollectionSection, NewsContent>
+    private typealias DataSource = UICollectionViewDiffableDataSource<CollectionSection, NewsModel>
+    private typealias DataSnapshot = NSDiffableDataSourceSnapshot<CollectionSection, NewsModel>
     
-    private typealias CellRegistration = UICollectionView.CellRegistration<NewsCollectionViewCell, NewsContent>
+    private typealias CellRegistration = UICollectionView.CellRegistration<NewsCollectionViewCell, NewsModel>
     
     private let viewModel: NewsViewModel
     
@@ -25,7 +25,7 @@ class NewsViewController: UIViewController {
     
     private var dataSource: DataSource!
     
-    private var news: [NewsContent] = []
+    private var news: [NewsModel] = []
     
     init(vm: NewsViewModel) {
         self.viewModel = vm
@@ -54,16 +54,24 @@ class NewsViewController: UIViewController {
 extension NewsViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        getNewsImage(indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let index = indexPath.item
-        guard news[index].titleImage == nil else { return }
-        let url = news[index].titleImageURL
-        Task {
-            let image = await viewModel.getImage(url)
-            news[index].titleImage = image
-            
-            await MainActor.run {
-                updateData(index: index)
-            }
+        
+        let vc = DetailViewController(news: news[index])
+        let delegate = DetailScreenTransitionDelegate()
+        vc.transitioningDelegate = delegate
+        vc.modalPresentationStyle = .custom
+        present(vc, animated: true)
+    }
+}
+
+extension NewsViewController: UICollectionViewDataSourcePrefetching {
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            getNewsImage(indexPath)
         }
     }
 }
@@ -83,6 +91,7 @@ extension NewsViewController {
         
         collectionView.backgroundColor = .white
         collectionView.delegate = self
+        collectionView.prefetchDataSource = self
     }
     
     private func getPhoneCollectionLayout() -> UICollectionViewCompositionalLayout {
@@ -138,6 +147,20 @@ extension NewsViewController {
         }
     }
     
+    private func getNewsImage(_ indexPath: IndexPath) {
+        let index = indexPath.item
+        guard news[index].titleImage == nil else { return }
+        let url = news[index].titleImageURL
+        Task {
+            let image = await viewModel.getImage(url)
+            news[index].titleImage = image
+            
+            await MainActor.run {
+                updateData(index: index)
+            }
+        }
+    }
+    
     private func updateData(index: Int) {
         var snapshot = dataSource.snapshot()
         
@@ -145,5 +168,5 @@ extension NewsViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
-
-
+    
+    

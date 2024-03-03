@@ -12,7 +12,6 @@ class NewsContentView: UIView, UIContentView {
     private let inset: CGFloat = 10
     
     private var newsImageView: UIImageView!
-    
     private var label: UILabel!
 
     var configuration: UIContentConfiguration {
@@ -55,6 +54,11 @@ extension NewsContentView {
         layer.borderColor = UIColor.systemPink.cgColor
         layer.borderWidth = 2
         
+        setupImageView()
+        setupLabel()
+    }
+    
+    private func setupImageView() {
         newsImageView = UIImageView()
         addSubview(newsImageView)
         newsImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +70,9 @@ extension NewsContentView {
         newsImageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         newsImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         newsImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 9/16).isActive = true
-        
+    }
+    
+    private func setupLabel() {
         label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 20, weight: .heavy)
@@ -74,7 +80,7 @@ extension NewsContentView {
         addSubview(label)
         
         label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -inset).isActive = true
-        label.topAnchor.constraint(equalTo: newsImageView.bottomAnchor, constant: inset).isActive = true
+        label.topAnchor.constraint(equalTo: newsImageView.bottomAnchor).isActive = true
         label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: inset).isActive = true
         label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -inset).isActive = true
     }

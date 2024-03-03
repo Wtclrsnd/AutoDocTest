@@ -9,7 +9,7 @@ import UIKit
 
 final class NewsViewModel: NSObject {
     
-    func getNews() async -> [NewsContent]? {
+    func getNews() async -> [NewsModel]? {
         do {
             let news = try await NewsAPIManager.getNews()
             return constructNews(news: news?.news)
@@ -27,8 +27,8 @@ final class NewsViewModel: NSObject {
         }
     }
     
-    private func constructNews(news: [News]?) -> [NewsContent] {
-        var result: [NewsContent] = []
+    private func constructNews(news: [News]?) -> [NewsModel] {
+        var result: [NewsModel] = []
         guard let news else { return [] }
         for new in news {
             guard let id = new.id,
@@ -42,7 +42,7 @@ final class NewsViewModel: NSObject {
                   let titleImageURLString = new.titleImageURL,
                   let titleImageURL = URL(string: titleImageURLString),
                   let categoryType = new.categoryType else { continue }
-            let element = NewsContent(id: id, 
+            let element = NewsModel(id: id, 
                                       title: title,
                                       description: description,
                                       publishedDate: publishedDate,

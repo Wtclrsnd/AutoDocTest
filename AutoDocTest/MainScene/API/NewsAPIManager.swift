@@ -7,8 +7,6 @@
 
 import Foundation
 
-// https://webapi.autodoc.ru/api/news/1/15
-
 final class NewsAPIManager {
     
     static func getNews() async throws -> NewsDTO? {

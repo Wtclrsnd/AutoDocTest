@@ -9,7 +9,7 @@ import UIKit
 
 class NewsCollectionViewCell: UICollectionViewCell {
 
-    var model: NewsContent? {
+    var model: NewsModel? {
         didSet {
             setNeedsUpdateConfiguration()
         }
