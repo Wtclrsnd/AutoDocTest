@@ -15,8 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            let navController = UINavigationController(rootViewController: NewsViewController(vm: NewsViewModel()))
-            window.rootViewController = navController
+            window.rootViewController = NewsViewController(vm: NewsViewModel())
             self.window = window
 
             window.makeKeyAndVisible()

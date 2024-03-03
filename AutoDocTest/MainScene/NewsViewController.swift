@@ -38,7 +38,7 @@ class NewsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .white
         setupCollectionView()
         
         Task {
@@ -86,16 +86,13 @@ extension NewsViewController {
     }
     
     private func getPhoneCollectionLayout() -> UICollectionViewCompositionalLayout {
-        let estimatedContentHeight: CGFloat = view.frame.width / 2
         let gridSpacing: CGFloat = 10
         let contentSectionInset: CGFloat = 10
         let interGroupSpacing: CGFloat = 10
         
-        let contentItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(estimatedContentHeight))
-        let contentGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(estimatedContentHeight))
+        let contentItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
+        let contentGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
         let contentItem = NSCollectionLayoutItem(layoutSize: contentItemSize)
-        
-        contentItem.contentInsets = NSDirectionalEdgeInsets(top: gridSpacing, leading: 0, bottom: gridSpacing, trailing: 0)
         
         let contentGroup = NSCollectionLayoutGroup.vertical(layoutSize: contentGroupSize, subitems: [contentItem])
         contentGroup.interItemSpacing = .fixed(gridSpacing)

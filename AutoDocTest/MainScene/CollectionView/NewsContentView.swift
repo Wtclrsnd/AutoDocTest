@@ -42,7 +42,6 @@ class NewsContentView: UIView, UIContentView {
         
         currentConfiguration = configuration
         
-//        backgroundColor = configuration.color
         newsImageView.image = configuration.image
         label.text = configuration.title
     }
@@ -59,6 +58,7 @@ extension NewsContentView {
         newsImageView = UIImageView()
         addSubview(newsImageView)
         newsImageView.translatesAutoresizingMaskIntoConstraints = false
+        newsImageView.clipsToBounds = true
         newsImageView.backgroundColor = .systemPink
         newsImageView.contentMode = .scaleAspectFill
         
@@ -74,7 +74,7 @@ extension NewsContentView {
         addSubview(label)
         
         label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -inset).isActive = true
-        label.topAnchor.constraint(equalTo: newsImageView.bottomAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: newsImageView.bottomAnchor, constant: inset).isActive = true
         label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: inset).isActive = true
         label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -inset).isActive = true
     }
