@@ -7,14 +7,76 @@
 
 import UIKit
 
-class NewsContentView: UIView {
+class NewsContentView: UIView, UIContentView {
+    
+    private let inset: CGFloat = 10
+    
+    private var newsImageView: UIImageView!
+    
+    private var label: UILabel!
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    var configuration: UIContentConfiguration {
+        get {
+            currentConfiguration
+        }
+        set {
+            guard let newConfiguration = newValue as? NewsCellContentConfiguration else { return }
+            apply(newConfiguration)
+        }
     }
-    */
+    
+    private var currentConfiguration: NewsCellContentConfiguration!
 
+    init(configuration: NewsCellContentConfiguration!) {
+        super.init(frame: .zero)
+        setup()
+        apply(configuration)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func apply(_ configuration: NewsCellContentConfiguration) {
+        guard currentConfiguration != configuration else { return }
+        
+        currentConfiguration = configuration
+        
+//        backgroundColor = configuration.color
+        newsImageView.image = configuration.image
+        label.text = configuration.title
+    }
 }
+
+extension NewsContentView {
+    
+    private func setup() {
+        layer.cornerRadius = 10
+        clipsToBounds = true
+        layer.borderColor = UIColor.systemPink.cgColor
+        layer.borderWidth = 2
+        
+        newsImageView = UIImageView()
+        addSubview(newsImageView)
+        newsImageView.translatesAutoresizingMaskIntoConstraints = false
+        newsImageView.backgroundColor = .systemPink
+        newsImageView.contentMode = .scaleAspectFill
+        
+        newsImageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        newsImageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        newsImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        newsImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 9/16).isActive = true
+        
+        label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 20, weight: .heavy)
+        label.numberOfLines = 0
+        addSubview(label)
+        
+        label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -inset).isActive = true
+        label.topAnchor.constraint(equalTo: newsImageView.bottomAnchor).isActive = true
+        label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: inset).isActive = true
+        label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -inset).isActive = true
+    }
+}
+
