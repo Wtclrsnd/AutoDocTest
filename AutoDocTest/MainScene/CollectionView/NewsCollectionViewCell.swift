@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NewsCollectionViewCell: UICollectionViewCell {
+final class NewsCollectionViewCell: UICollectionViewCell {
 
     var model: NewsModel? {
         didSet {

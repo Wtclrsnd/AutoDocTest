@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NewsContentView: UIView, UIContentView {
+final class NewsContentView: UIView, UIContentView {
     
     private let inset: CGFloat = 10
     

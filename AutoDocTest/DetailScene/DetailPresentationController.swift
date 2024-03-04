@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DetailPresentationController: UIPresentationController {
+final class DetailPresentationController: UIPresentationController {
     
     private let presentedYOffset: CGFloat = 100
     private let inset: CGFloat = 10
