@@ -47,8 +47,6 @@ class NewsViewController: UIViewController {
             setupDataSource()
         }
     }
-    
-    
 }
 
 extension NewsViewController: UICollectionViewDelegate {
@@ -79,7 +77,8 @@ extension NewsViewController: UICollectionViewDataSourcePrefetching {
 extension NewsViewController {
     
     private func setupCollectionView() {
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: getPhoneCollectionLayout())
+        let layout = UIDevice.current.userInterfaceIdiom == .pad ? getPadCollectionLayout() : getPhoneCollectionLayout()
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -95,22 +94,57 @@ extension NewsViewController {
     }
     
     private func getPhoneCollectionLayout() -> UICollectionViewCompositionalLayout {
-        let gridSpacing: CGFloat = 10
-        let contentSectionInset: CGFloat = 10
-        let interGroupSpacing: CGFloat = 10
+        let horizontalInset: CGFloat = 20
+        let verticalInset: CGFloat = 10
+        let estimatedWidth: CGFloat = view.frame.width - (horizontalInset * 2)
+        let estimatedHeight: CGFloat = estimatedWidth * 0.75
         
-        let contentItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
-        let contentGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(100))
-        let contentItem = NSCollectionLayoutItem(layoutSize: contentItemSize)
+        let layoutSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(estimatedHeight)
+        )
         
-        let contentGroup = NSCollectionLayoutGroup.vertical(layoutSize: contentGroupSize, subitems: [contentItem])
-        contentGroup.interItemSpacing = .fixed(gridSpacing)
+        let item = NSCollectionLayoutItem(layoutSize: layoutSize)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: layoutSize, subitem: item, count: 1)
         
-        let contentSection = NSCollectionLayoutSection(group: contentGroup)
-        contentSection.contentInsets = NSDirectionalEdgeInsets(top: contentSectionInset, leading: contentSectionInset, bottom: contentSectionInset, trailing: contentSectionInset)
-        contentSection.interGroupSpacing = interGroupSpacing
+        let section = NSCollectionLayoutSection(group: group)
         
-        return UICollectionViewCompositionalLayout(section: contentSection)
+        section.contentInsets = NSDirectionalEdgeInsets(top: verticalInset, leading: horizontalInset, bottom: verticalInset, trailing: horizontalInset)
+        
+        section.interGroupSpacing = 24
+        return UICollectionViewCompositionalLayout(section: section)
+        
+    }
+    
+    
+    
+    private func getPadCollectionLayout() -> UICollectionViewCompositionalLayout {
+        let horizontalInset: CGFloat = 36
+        let verticalInset: CGFloat = 24
+        let gridSpacing: CGFloat = 24
+        let estimatedWidth: CGFloat = (view.frame.width - ((horizontalInset * 2) + gridSpacing)) / 2
+        let estimatedHeight: CGFloat = estimatedWidth * 0.75
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(estimatedHeight))
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(estimatedWidth), heightDimension: .fractionalHeight(1.0))
+        
+        let mainGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
+        group.interItemSpacing = .fixed(gridSpacing)
+        
+        let mainGroup = NSCollectionLayoutGroup.horizontal(layoutSize: mainGroupSize, subitem: group, count: 2)
+        
+        mainGroup.interItemSpacing = .fixed(gridSpacing)
+        
+        let section = NSCollectionLayoutSection(group: mainGroup)
+        section.contentInsets = NSDirectionalEdgeInsets(top: verticalInset, leading: horizontalInset, bottom: verticalInset, trailing: horizontalInset)
+        section.interGroupSpacing = gridSpacing
+        return UICollectionViewCompositionalLayout(section: section)
     }
     
     
@@ -129,9 +163,7 @@ extension NewsViewController {
     private func getDataSource(_ cellRegistration: CellRegistration) -> DataSource {
         DataSource(collectionView: collectionView) {
             collectionView, indexPath, model -> UICollectionViewCell in
-            collectionView.dequeueConfiguredReusableCell(using: cellRegistration,
-                                                         for: indexPath,
-                                                         item: model)
+            collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: model)
         }
     }
     
@@ -168,5 +200,5 @@ extension NewsViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
-    
+
     

@@ -80,9 +80,12 @@ extension NewsContentView {
         addSubview(label)
         
         label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -inset).isActive = true
-        label.topAnchor.constraint(equalTo: newsImageView.bottomAnchor).isActive = true
+        let topConstraint = label.topAnchor.constraint(equalTo: newsImageView.bottomAnchor)
         label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: inset).isActive = true
         label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -inset).isActive = true
+        
+        topConstraint.priority = .defaultLow
+        topConstraint.isActive = true
     }
 }
 

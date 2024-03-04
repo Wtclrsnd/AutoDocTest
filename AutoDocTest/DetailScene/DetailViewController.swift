@@ -9,12 +9,15 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
+    private let contentInset: CGFloat = 20
+    private let news: NewsModel
+    
     private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         return panGesture
     }()
-
-    private let imageView: UIImageView = {
+    
+    private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -24,7 +27,7 @@ class DetailViewController: UIViewController {
         return imageView
     }()
     
-    private let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
@@ -33,23 +36,22 @@ class DetailViewController: UIViewController {
         return label
     }()
     
-    private let dateLabel: UILabel = {
+    private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 14)
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let descriptionLabel: UILabel = {
+    private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    private var news: NewsModel
     
     init(news: NewsModel) {
         self.news = news
@@ -62,24 +64,19 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.addGestureRecognizer(panGestureRecognizer)
-        view.backgroundColor = .white
-        view.layer.borderColor = UIColor.systemPink.cgColor
-        view.layer.borderWidth = 1
-        view.layer.cornerRadius = 20
+        
         setupUI()
         
         imageView.image = news.titleImage
         titleLabel.text = news.title
         let date = parseDate(string: news.publishedDate)
-        dateLabel.text = "Опубликовано: " + formatDate(date: date)
+        dateLabel.text = "Опубликовано: " + formatDate(date: date) + "\n" + news.categoryType.rawValue
         descriptionLabel.text = news.description
     }
 }
 
 extension DetailViewController {
-
+    
     @objc private func handlePan(_ sender: UIPanGestureRecognizer) {
         let translation = sender.translation(in: view)
         
@@ -100,6 +97,7 @@ extension DetailViewController {
             break
         }
     }
+    
     private func parseDate(string: String) -> Date {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
@@ -113,33 +111,49 @@ extension DetailViewController {
     }
     
     private func setupUI() {
+        view.addGestureRecognizer(panGestureRecognizer)
+        view.backgroundColor = .white
+        view.layer.borderColor = UIColor.systemPink.cgColor
+        view.layer.borderWidth = 1
+        view.layer.cornerRadius = 20
+        
+        setupImageView()
+        setuptitleLabel()
+        setupDateLabel()
+        setupDescriptionLabel()
+    }
+    
+    private func setupImageView() {
         view.addSubview(imageView)
-        view.addSubview(titleLabel)
-        view.addSubview(dateLabel)
-        view.addSubview(descriptionLabel)
         
         imageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         imageView.heightAnchor.constraint(equalTo: view.widthAnchor, multiplier: 9/16).isActive = true
+    }
+    
+    private func setuptitleLabel() {
+        view.addSubview(titleLabel)
         
-        titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: contentInset).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: contentInset).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -contentInset).isActive = true
+    }
+    
+    private func setupDateLabel() {
+        view.addSubview(dateLabel)
         
-        dateLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10).isActive = true
-        dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        dateLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: contentInset).isActive = true
+        dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: contentInset).isActive = true
+        dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -contentInset).isActive = true
+    }
+    
+    private func setupDescriptionLabel() {
+        view.addSubview(descriptionLabel)
         
-        descriptionLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 20).isActive = true
-        descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        descriptionLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: contentInset).isActive = true
+        descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: contentInset).isActive = true
+        descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -contentInset).isActive = true
     }
 }
-
-//extension DetailViewController: UIViewControllerTransitioningDelegate {
-//    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-//        return DetailPresentationController(presentedViewController: presented, presenting: presenting)
-//    }
-//}
 
